@@ -2,8 +2,9 @@
 // Every page: its title, description and link previews (Open Graph, Twitter), canonical URL and structured data;
 // the header and footer; the scripts for the scroll-ins and the pointer glow.
 import '@fontsource-variable/plus-jakarta-sans';
+import '../../app/web/src/lib/tokens.css'; // (the app's colors)
 import '../styles/global.css';
-import Logo from '../components/Logo.astro';
+import Logo from '../../app/web/src/components/Logo.svelte'; // (the app's own)
 import Icon from '../components/Icon.astro';
 import Email from '../components/Email.astro';
 import { REPO, PLUGINS_REPO, CHANGELOG } from '../lib/site';
@@ -79,6 +80,10 @@ const img = new URL(image, Astro.site);
               <Logo size={30} />
               <p>A fast, self-hosted media library with a built-in downloader.</p>
               <p class="aside">Made with too much coffee. AGPL-3.0.</p>
+              <p class="credits">
+                Screenshots: art from the <a href="https://www.artic.edu/open-access">Art Institute of Chicago</a> (public domain), clips from the
+                Blender open movies (<a href="https://studio.blender.org/films/">Blender Foundation</a>, CC BY), comics by Winsor McCay (public domain).
+              </p>
             </div>
             <nav aria-label="Project">
               <h2>Project</h2>
@@ -105,7 +110,7 @@ const img = new URL(image, Astro.site);
       )
     }
     <script>
-      import { overlayScroll } from '../lib/overlay-scroll';
+      import { overlayScroll } from '../../app/web/src/lib/overlayScroll'; // (the app's own)
       // The app's scrollbar: the page's, and every code block's that scrolls sideways.
       overlayScroll('page');
       for (const pre of document.querySelectorAll<HTMLElement>('main pre')) overlayScroll(pre, 'x');
@@ -200,6 +205,16 @@ const img = new URL(image, Astro.site);
     display: grid;
     gap: 12px;
     align-content: start;
+  }
+  .credits {
+    font-size: 12px;
+    color: var(--overlay0);
+    max-width: 46ch;
+  }
+  .credits a {
+    color: var(--overlay1);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
   .brand p:first-of-type {
     color: var(--subtext);

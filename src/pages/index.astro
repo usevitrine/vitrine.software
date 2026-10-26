@@ -4,12 +4,15 @@ import Frame from '../components/Frame.astro';
 import Icon from '../components/Icon.astro';
 import Email from '../components/Email.astro';
 import { REPO, PLUGINS_REPO, RELEASES, latestRelease } from '../lib/site';
-import library from '../assets/shots/library.webp';
-import grid from '../assets/shots/library-grid.webp';
-import viewer from '../assets/shots/viewer.webp';
-import phoneLibrary from '../assets/shots/phone-library.webp';
-import phoneGrid from '../assets/shots/phone-grid.webp';
-import phoneDetails from '../assets/shots/phone-details.webp';
+// (taken by the app repo's tools/siteshots from its demo library: public-domain art, Blender open-movie clips, McCay's comics)
+import library from '../assets/shots/desktop-library.png';
+import search from '../assets/shots/desktop-search.png';
+import viewer from '../assets/shots/desktop-viewer.png';
+import reader from '../assets/shots/desktop-reader.png';
+import phoneLibrary from '../assets/shots/phone-library.png';
+import phoneSearch from '../assets/shots/phone-search.png';
+import phoneVideo from '../assets/shots/phone-video.png';
+import phoneComics from '../assets/shots/phone-comics.png';
 
 const release = await latestRelease();
 const windows = release.windows ?? RELEASES;
@@ -123,7 +126,7 @@ const more = [
       <p class="aside rise" style="--i:4">No cloud. No account. No one judging your 40,000 bookmarks.</p>
     </div>
     <div class="wrap hero-shots">
-      <Frame src={library} alt="Vitrine's library in Rows: a search bar over a justified grid of pictures" eager class="hero-laptop" />
+      <Frame src={library} alt="Vitrine's library in Rows: a search bar over a justified grid of paintings, prints and clips" eager class="hero-laptop" />
       <Frame src={phoneLibrary} kind="phone" alt="Vitrine on a phone: the library in Rows" eager class="hero-phone" />
     </div>
   </section>
@@ -154,7 +157,7 @@ const more = [
       </div>
     </div>
     <div class="shot" data-reveal style="--i:1">
-      <Frame src={grid} alt="The library as square tiles, with search chips in the search bar" />
+      <Frame src={search} alt="A search for woodblock prints without portraits: two chips in the search bar over a grid of Japanese prints" />
     </div>
   </section>
 
@@ -236,8 +239,8 @@ const more = [
         browse a gallery site before downloading anything.
       </p>
     </div>
-    <div class="shot placeholder glow" data-reveal style="--i:1">
-      <span>Comics screenshot</span>
+    <div class="shot" data-reveal style="--i:1">
+      <Frame src={reader} alt="The comic reader: a page of Little Nemo in Slumberland, its title and page number at the top, a slider at the bottom" />
     </div>
   </section>
 
@@ -253,9 +256,9 @@ const more = [
         </p>
       </div>
       <div class="phones">
-        <Frame src={phoneGrid} kind="phone" alt="On a phone: the library as square tiles" class="p1" />
-        <Frame src={phoneLibrary} kind="phone" alt="On a phone: the library in Rows" class="p2" />
-        <Frame src={phoneDetails} kind="phone" alt="On a phone: a picture with its details sheet" class="p3" />
+        <Frame src={phoneSearch} kind="phone" alt="On a phone: a search with chips over a grid of woodblock prints" class="p1" />
+        <Frame src={phoneVideo} kind="phone" alt="On a phone: a clip playing in the viewer, with its controls" class="p2" />
+        <Frame src={phoneComics} kind="phone" alt="On a phone: the Comics page" class="p3" />
       </div>
     </div>
   </section>

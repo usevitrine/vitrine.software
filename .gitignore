@@ -23,5 +23,3 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# Stand-in screenshots (safebooru art from the app README) until the CC0 library ones are made - never published
-src/assets/shots/

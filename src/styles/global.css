@@ -1,26 +1,7 @@
-/* vitrine.software: the app's look - Catppuccin Mocha, the mauve accent, Plus Jakarta Sans - for a page to read. */
+/* vitrine.software: the app's look - its colors (app/web/src/lib/tokens.css, imported before this), the mauve
+   accent, Plus Jakarta Sans - for a page to read. */
 :root {
-  color-scheme: dark;
-  --crust: #11111b;
-  --mantle: #181825;
-  --base: #1e1e2e;
-  --surface0: #313244;
-  --surface1: #45475a;
-  --surface2: #585b70;
-  --overlay0: #6c7086;
-  --overlay1: #7f849c;
-  --text: #cdd6f4;
-  --subtext: #a6adc8;
-  --mauve: #cba6f7;
-  --pink: #f5c2e7;
-  --lavender: #b4befe;
-  --blue: #89b4fa;
-  --teal: #94e2d5;
-  --green: #a6e3a1;
-  --yellow: #f9e2af;
-  --peach: #fab387;
-  --red: #f38ba8;
-  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1); /* (the app's standard ease) */
   --radius: 14px;
   --wide: 1180px;
   --gutter: clamp(16px, 4vw, 40px);
@@ -241,55 +222,4 @@ pre {
   .js [data-reveal] {
     transform: none;
   }
-}
-
-/* The app's scrollbar (lib/overlay-scroll.ts), for the page and anything in it that scrolls: with a mouse the
-   browser's own is hidden (it takes room) and a thin thumb floats over the content, shown while scrolling or when
-   the pointer comes near (wider under it, to grab and drag). Touch screens keep their own (it floats already). */
-.oscroll-on,
-.oscroll-on body,
-.oscroll-host {
-  scrollbar-width: none;
-}
-.oscroll-on::-webkit-scrollbar,
-.oscroll-on body::-webkit-scrollbar,
-.oscroll-host::-webkit-scrollbar {
-  display: none;
-}
-.oscroll {
-  position: absolute;
-  z-index: 30;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--text) 32%, transparent);
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity 0.25s,
-    width 0.15s,
-    height 0.15s,
-    background-color 0.15s;
-}
-.oscroll.y {
-  width: 6px;
-}
-.oscroll.x {
-  height: 6px;
-}
-.oscroll.page {
-  position: fixed;
-  z-index: 60;
-}
-.oscroll.on {
-  opacity: 1;
-  pointer-events: auto;
-}
-.oscroll.y:hover,
-.oscroll.y.drag {
-  width: 10px;
-  background: color-mix(in srgb, var(--text) 50%, transparent);
-}
-.oscroll.x:hover,
-.oscroll.x.drag {
-  height: 10px;
-  background: color-mix(in srgb, var(--text) 50%, transparent);
 }
