@@ -1,56 +1,89 @@
 ---
-// The demo: Vitrine's media screen in the browser, a library of public-domain art and open-movie clips. Until its
-// build is in place, a page that says what it will be (search engines read this text either way).
+// The demo: Vitrine's own web app (the submodule's, built in demo mode - its search runs this program's index as
+// WebAssembly) with a library of public-domain art and Blender open-movie clips, in a frame. A short text above it
+// for people and search engines; on a phone the app is better full screen, so it says so.
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 
 const title = 'Try Vitrine - a live demo in your browser';
 const description =
-  "Try Vitrine's media library in your browser: search, sort and filter a library of public-domain art and open-movie clips, open the viewer and the details with their tags and sources. Nothing to install, nothing saved.";
+  "Try Vitrine's media library in your browser: search with tags, sort and filter a library of public-domain art and open-movie clips, open the viewer and the details with their tags and sources, favorite and tag things. Nothing to install, nothing saved.";
 ---
 
 <Base title={title} description={description}>
   <section class="wrap demo">
-    <p class="eyebrow"><Icon name="play" size={15} /> Demo</p>
-    <h1>Vitrine, right here in your browser.</h1>
-    <p class="lead">
-      The real media screen with a library of public-domain art and clips from the Blender open movies. Search, sort, open the viewer and the details,
-      tag and favorite things. Your changes stay in this tab only: reload and it's fresh again.
-    </p>
-    <div class="soon glow">
-      <Icon name="sparkles" size={22} />
-      <p>The demo is being put together. Come back soon.</p>
-      <p class="aside">It's tagging 300 paintings by hand. Well, by script.</p>
+    <div class="intro">
+      <div>
+        <p class="eyebrow"><Icon name="play" size={15} /> Demo</p>
+        <h1>Vitrine, right here in your browser.</h1>
+        <p class="lead">
+          The real media screen, with 296 public-domain artworks and 24 clips from the Blender open movies. Search with tags, open the viewer and the
+          details, tag and favorite things. Your changes stay in this tab: reload and it's fresh again.
+        </p>
+      </div>
+      <a class="btn quiet full" href="/demo/app/"><Icon name="external" size={18} /> Full screen</a>
     </div>
-    <a class="btn quiet" href="/"><Icon name="arrow" size={18} /> Back to the home page</a>
+    <div class="frame glow">
+      <iframe src="/demo/app/" title="The Vitrine demo: the media screen" allow="fullscreen" loading="eager"></iframe>
+    </div>
+    <p class="aside">Try <code>sintel</code>, <code>-painting</code>, <code>system:type=video</code> or <code>creator:vincent_van_gogh</code>. Go on, delete something. There's undo.</p>
   </section>
 </Base>
 
 <style>
   .demo {
     display: grid;
-    justify-items: center;
-    text-align: center;
     gap: 22px;
-    padding-top: clamp(60px, 10vw, 120px);
+    padding-top: clamp(28px, 5vw, 56px);
+  }
+  .intro {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .intro > div {
+    display: grid;
+    gap: 12px;
+    max-width: 760px;
   }
   h1 {
-    font-size: clamp(36px, 6vw, 64px);
+    font-size: clamp(30px, 4.4vw, 52px);
   }
-  .lead {
-    max-width: 680px;
+  .full {
+    flex: none;
   }
-  .soon {
-    display: grid;
-    justify-items: center;
-    gap: 10px;
-    width: min(100%, 560px);
-    padding: 36px 24px;
-    margin: 12px 0;
-    color: var(--mauve);
+  /* The app fills what's left of the window under the header (its own screen, at least a phone's height). */
+  .frame {
+    padding: 6px;
+    border-radius: 18px;
   }
-  .soon p:not(.aside) {
+  iframe {
+    display: block;
+    width: 100%;
+    height: max(560px, calc(100dvh - 120px));
+    border: 0;
+    border-radius: 13px;
+    background: var(--crust);
+  }
+  .aside code {
+    font-style: normal;
+    font-size: 0.9em;
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: var(--surface0);
     color: var(--text);
-    font-weight: 600;
+  }
+  @media (max-width: 700px) {
+    .intro {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .full {
+      justify-content: center;
+    }
+    iframe {
+      height: calc(100dvh - 90px);
+    }
   }
 </style>

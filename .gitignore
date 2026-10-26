@@ -23,3 +23,6 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
+
+# the demo (npm run demo: ~110 MB, never in git)
+public/demo/app/
