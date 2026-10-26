@@ -16,17 +16,17 @@ npm run dev        # http://localhost:4321
 ## The demo
 
 `/demo` shows the app with a library of public-domain art and Blender open-movie clips, its search running Vitrine's
-own index compiled to WebAssembly. It isn't in git (~130 MB): the deploy downloads `vitrine-demo.tar.gz` from this
-repository's release tagged `demo`. To make it (needs Go and Node, in `app/`):
+own index compiled to WebAssembly. Every deploy builds it from the app submodule (`npm run build:demo` in `app/web`),
+so it always matches the app the site points at. Its library isn't in git (~120 MB): the deploy downloads
+`demo-library.tar.gz` (`snapshot.json` and `media/`) from this repository's release tagged `demo`.
 
-```sh
-go run ./tools/demolib       # fetch the art and clips, build the library (cached)
-go run ./tools/demosnap      # export its snapshot
-cd web && npm run build:demo -- <snapshot folder>   # -> web/dist-demo
-```
+**Following the app**: `.github/workflows/update-app.yml` checks once a day for a new Vitrine release, moves the
+submodule to it and deploys - a release reaches the site and its demo within a day (or run the workflow by hand).
 
-Then `npm run demo` here puts it at `public/demo/app` for a local build; for the site, pack `web/dist-demo` as
-`vitrine-demo.tar.gz` and upload it to the `demo` release.
+**A new library** (other art or clips; needs Go, in `app/`): `go run ./tools/demolib`, `go run ./tools/demosnap`, then
+pack the snapshot folder's `snapshot.json` and `media/` as `demo-library.tar.gz` and upload it to the `demo` release
+(`gh release upload demo demo-library.tar.gz --clobber`). Locally: `npm run build:demo --prefix app/web -- <snapshot
+folder>`, then `npm run demo` puts it at `public/demo/app`.
 
 ## Screenshots
 

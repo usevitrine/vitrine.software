@@ -1,6 +1,8 @@
-# vitrine.software: built and deployed to Cloudflare Workers on every push to main (and by hand). The demo (the
-# app's web client in demo mode with its library, ~130 MB) isn't in git: it's the vitrine-demo.tar.gz of this
-# repository's release tagged "demo", put at public/demo/app before the build.
+# vitrine.software: built and deployed to Cloudflare Workers on every push to main, by hand, and when the app moves on
+# (update-app.yml). The demo is built here from the app submodule (its web client in demo mode and its search engine
+# as WebAssembly), so it always matches the app the site points at; only its library - public-domain art and Blender
+# clips with their data, which rarely change - comes from this repository's release tagged "demo"
+# (demo-library.tar.gz: the app's tools/demosnap output).
 name: Deploy
 
 on:
@@ -22,18 +24,28 @@ jobs:
       - uses: actions/checkout@v5
         with:
           submodules: true
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: app/go.mod
+          cache-dependency-path: app/go.sum
       - uses: actions/setup-node@v5
         with:
           node-version: 24
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            app/web/package-lock.json
       - run: npm ci
-      - name: The demo
+      - name: The demo (from the app submodule, with its library)
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p public/demo/app
-          gh release download demo --repo "$GITHUB_REPOSITORY" --pattern vitrine-demo.tar.gz --output /tmp/demo.tar.gz
-          tar -xzf /tmp/demo.tar.gz -C public/demo/app
+          mkdir -p /tmp/demo-library
+          gh release download demo --repo "$GITHUB_REPOSITORY" --pattern demo-library.tar.gz --output /tmp/demo-library.tar.gz
+          tar -xzf /tmp/demo-library.tar.gz -C /tmp/demo-library
+          npm ci --prefix app/web
+          npm run build:demo --prefix app/web -- /tmp/demo-library
+          node scripts/demo.mjs
       - run: npx astro build
       - name: Deploy
         env:

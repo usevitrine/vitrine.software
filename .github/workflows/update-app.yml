@@ -1,0 +1,46 @@
+# Keeps the site on Vitrine's latest release: once a day (and by hand) the app submodule moves to the newest release
+# tag if it isn't there, and the site is deployed with it - its demo, logo, colors and scrollbar from that version.
+# (A push made with this workflow's token starts no other workflow, so it starts the deploy itself.)
+name: Follow the app's releases
+
+on:
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: true
+          fetch-depth: 0
+      - name: Move to the latest release
+        id: move
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh api repos/usevitrine/vitrine/releases/latest --jq .tag_name)
+          git -C app fetch --quiet --tags origin
+          want=$(git -C app rev-parse "$tag^{commit}")
+          have=$(git -C app rev-parse HEAD)
+          if [ "$want" = "$have" ]; then
+            echo "the site is on $tag already"
+            exit 0
+          fi
+          git -C app checkout --quiet "$tag"
+          git config user.name "usevitrine"
+          git config user.email "345353622+usevitrine@users.noreply.github.com"
+          git commit --quiet -am "app: $tag"
+          git push --quiet
+          echo "moved=$tag" >> "$GITHUB_OUTPUT"
+      - name: Deploy
+        if: steps.move.outputs.moved != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --repo "$GITHUB_REPOSITORY" --ref main
