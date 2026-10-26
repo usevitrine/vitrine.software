@@ -327,6 +327,7 @@ const more = [
         <h3>Windows</h3>
         <p>The installer brings everything with it, asks where to keep your library, and puts Vitrine by the clock. No administrator needed.</p>
         <a class="btn" href={windows}><Icon name="download" size={18} /> Download for Windows</a>
+        {release.windowsArm && <p class="small">On an ARM PC (Snapdragon)? <a href={release.windowsArm}>Download for Windows on ARM</a></p>}
         <p class="small">Windows may warn about an unknown publisher: More info, then Run anyway.</p>
       </div>
       <div class="glow way" data-reveal style="--i:1">
