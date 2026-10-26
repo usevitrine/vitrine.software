@@ -21,6 +21,7 @@
     "svelte": "5.57.2"
   },
   "devDependencies": {
-    "@tsconfig/svelte": "^5.0.8"
+    "@tsconfig/svelte": "^5.0.8",
+    "wrangler": "^4.152.0"
   }
 }

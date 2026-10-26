@@ -1,43 +1,40 @@
-# Astro Starter Kit: Minimal
+# vitrine.software
+
+The website of [Vitrine](https://github.com/usevitrine/vitrine), a fast, self-hosted media library with a built-in
+downloader: https://vitrine.software
+
+Built with [Astro](https://astro.build) (fully static) and deployed to Cloudflare Workers on every push to `main`
+(`.github/workflows/deploy.yml`). The app itself is a submodule (`app/`): the site uses its colors, logo and
+scrollbar, and the demo is its web client in demo mode.
 
 ```sh
-npm create astro@latest -- --template minimal
+git clone --recurse-submodules https://github.com/usevitrine/vitrine.software
+npm ci
+npm run dev        # http://localhost:4321
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## The demo
 
-## 🚀 Project Structure
+`/demo` shows the app with a library of public-domain art and Blender open-movie clips, its search running Vitrine's
+own index compiled to WebAssembly. It isn't in git (~130 MB): the deploy downloads `vitrine-demo.tar.gz` from this
+repository's release tagged `demo`. To make it (needs Go and Node, in `app/`):
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+go run ./tools/demolib       # fetch the art and clips, build the library (cached)
+go run ./tools/demosnap      # export its snapshot
+cd web && npm run build:demo -- <snapshot folder>   # -> web/dist-demo
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Then `npm run demo` here puts it at `public/demo/app` for a local build; for the site, pack `web/dist-demo` as
+`vitrine-demo.tar.gz` and upload it to the `demo` release.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Screenshots
 
-Any static assets, like images, can be placed in the `public/` directory.
+`src/assets/shots/` come from the app repository's `tools/siteshots` (every screen at desktop and phone widths, from
+the demo library).
 
-## 🧞 Commands
+## Credits
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Art: the [Art Institute of Chicago](https://www.artic.edu/open-access) (public domain). Clips: the Blender open
+movies, (c) Blender Foundation, [CC BY](https://creativecommons.org/licenses/by/4.0/). Comics: Winsor McCay (public
+domain). Code: AGPL-3.0, like Vitrine.
