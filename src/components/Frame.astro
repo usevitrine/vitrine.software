@@ -1,0 +1,132 @@
+---
+// A screenshot in a device: a laptop (a browser window on a lid, a base under it) or a phone (rounded, a dynamic
+// island). The picture as AVIF/WebP in the sizes it's shown at, its width and height set (nothing jumps as it loads).
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  kind?: 'laptop' | 'phone';
+  eager?: boolean; // the hero's: loaded first
+  class?: string;
+}
+const { src, alt, kind = 'laptop', eager = false, class: cls } = Astro.props;
+const sizes = kind === 'phone' ? '(min-width: 900px) 300px, 45vw' : '(min-width: 1240px) 1100px, 92vw';
+---
+
+<figure class:list={['frame', kind, cls]}>
+  <div class="screen">
+    {kind === 'laptop' && (
+      <div class="chrome" aria-hidden="true">
+        <i /><i /><i />
+        <span class="url">vitrine.local</span>
+      </div>
+    )}
+    {kind === 'phone' && <span class="island" aria-hidden="true" />}
+    <Picture
+      src={src}
+      alt={alt}
+      formats={['avif', 'webp']}
+      fallbackFormat="webp"
+      sizes={sizes}
+      widths={kind === 'phone' ? [300, 450, 600, 900] : [640, 960, 1280, 1600, 1920]}
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : 'auto'}
+      layout="full-width"
+    />
+  </div>
+  {kind === 'laptop' && <div class="base" aria-hidden="true" />}
+</figure>
+
+<style>
+  .frame {
+    margin: 0;
+    position: relative;
+  }
+  .screen {
+    position: relative;
+    overflow: hidden;
+    background: var(--base);
+  }
+  .screen :global(img) {
+    width: 100%;
+    height: auto;
+  }
+  .laptop .screen {
+    border-radius: 14px 14px 4px 4px;
+    border: 1px solid var(--surface1);
+    box-shadow:
+      0 0 0 6px #0b0b12,
+      0 0 0 7px var(--surface0),
+      0 40px 80px -30px rgb(0 0 0 / 0.8);
+  }
+  .chrome {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 12px;
+    background: var(--mantle);
+    border-bottom: 1px solid var(--surface0);
+  }
+  .chrome i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--surface1);
+  }
+  .chrome i:nth-child(1) {
+    background: var(--red);
+  }
+  .chrome i:nth-child(2) {
+    background: var(--yellow);
+  }
+  .chrome i:nth-child(3) {
+    background: var(--green);
+  }
+  .url {
+    margin: 0 auto;
+    padding: 2px 28px;
+    border-radius: 6px;
+    background: var(--base);
+    font-size: 11px;
+    color: var(--overlay1);
+    transform: translateX(-21px);
+  }
+  .base {
+    height: 14px;
+    margin: 0 max(-5%, -14px);
+    border-radius: 2px 2px 14px 14px;
+    background: linear-gradient(180deg, #2a2b3c, #15151f);
+    box-shadow: 0 18px 30px -12px rgb(0 0 0 / 0.7);
+  }
+  .base::after {
+    content: '';
+    display: block;
+    width: 16%;
+    height: 5px;
+    margin: 0 auto;
+    border-radius: 0 0 8px 8px;
+    background: #0d0d15;
+  }
+  .phone .screen {
+    border-radius: 38px;
+    border: 1px solid var(--surface1);
+    box-shadow:
+      0 0 0 7px #0b0b12,
+      0 0 0 8px var(--surface0),
+      0 40px 70px -30px rgb(0 0 0 / 0.85);
+  }
+  .island {
+    position: absolute;
+    z-index: 2;
+    top: 10px;
+    left: 50%;
+    width: 30%;
+    height: 22px;
+    border-radius: 999px;
+    background: #000;
+    transform: translateX(-50%);
+  }
+</style>

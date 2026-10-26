@@ -1,0 +1,239 @@
+---
+// Every page: its title, description and link previews (Open Graph, Twitter), canonical URL and structured data;
+// the header and footer; the scripts for the scroll-ins and the pointer glow.
+import '@fontsource-variable/plus-jakarta-sans';
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+import Icon from '../components/Icon.astro';
+import Email from '../components/Email.astro';
+import { REPO, PLUGINS_REPO, CHANGELOG } from '../lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string; // the link preview's picture (from /public)
+  jsonld?: object[];
+  bare?: boolean; // no header/footer (the demo)
+}
+const { title, description, image = '/social.png', jsonld = [], bare = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/'), Astro.site);
+const img = new URL(image, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#11111b" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Vitrine" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={img} />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="640" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={img} />
+    {jsonld.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <slot name="head" />
+  </head>
+  <body>
+    {
+      !bare && (
+        <header class="top">
+          <div class="wrap bar">
+            <a class="home" href="/" aria-label="Vitrine home">
+              <Logo size={28} />
+            </a>
+            <nav aria-label="Main">
+              <a href="/#features">Features</a>
+              <a href="/#install">Install</a>
+              <a href="/demo">Demo</a>
+              <a class="gh" href={REPO} aria-label="Vitrine on GitHub">
+                <Icon name="fork" size={18} />
+                <span>GitHub</span>
+              </a>
+            </nav>
+          </div>
+        </header>
+      )
+    }
+    <main id="main">
+      <slot />
+    </main>
+    {
+      !bare && (
+        <footer class="foot">
+          <div class="wrap cols">
+            <div class="brand">
+              <Logo size={30} />
+              <p>A fast, self-hosted media library with a built-in downloader.</p>
+              <p class="aside">Made with too much coffee. AGPL-3.0.</p>
+            </div>
+            <nav aria-label="Project">
+              <h2>Project</h2>
+              <a href={REPO}>GitHub</a>
+              <a href={CHANGELOG}>Changelog</a>
+              <a href={`${REPO}/releases`}>Releases</a>
+              <a href={`${REPO}/blob/main/LICENSE`}>License</a>
+            </nav>
+            <nav aria-label="More">
+              <h2>More</h2>
+              <a href="/demo">Demo</a>
+              <a href="/#install">Install</a>
+              <a href={PLUGINS_REPO}>Plugins</a>
+              <a href="/#faq">FAQ</a>
+            </nav>
+            <div class="contact">
+              <h2>Contact</h2>
+              <Email class="btn quiet small">
+                <Icon name="mail" size={16} />
+              </Email>
+            </div>
+          </div>
+        </footer>
+      )
+    }
+    <script>
+      // Scrolled into view: [data-reveal] slides in (once).
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        },
+        { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+      );
+      for (const el of document.querySelectorAll('[data-reveal]')) io.observe(el);
+      // The pointer's place on a .glow card, for its light.
+      document.addEventListener(
+        'pointermove',
+        (e) => {
+          const card = (e.target as Element | null)?.closest?.<HTMLElement>('.glow');
+          if (!card) return;
+          const r = card.getBoundingClientRect();
+          card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+          card.style.setProperty('--my', `${e.clientY - r.top}px`);
+        },
+        { passive: true },
+      );
+    </script>
+  </body>
+</html>
+
+<style>
+  .top {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--crust) 72%, transparent);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    border-bottom: 1px solid color-mix(in srgb, var(--surface0) 60%, transparent);
+    padding-top: env(safe-area-inset-top);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: 64px;
+  }
+  .home:hover {
+    text-decoration: none;
+  }
+  nav[aria-label='Main'] {
+    display: flex;
+    align-items: center;
+    gap: clamp(4px, 2vw, 22px);
+  }
+  nav[aria-label='Main'] a {
+    color: var(--subtext);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 8px 6px;
+    transition: color 0.2s var(--ease);
+  }
+  nav[aria-label='Main'] a:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .gh {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  @media (max-width: 560px) {
+    nav[aria-label='Main'] a[href='/#features'],
+    .gh span {
+      display: none;
+    }
+  }
+  .foot {
+    margin-top: 120px;
+    padding: 56px 0 calc(48px + env(safe-area-inset-bottom));
+    background: var(--mantle);
+    border-top: 1px solid var(--surface0);
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.4fr;
+    gap: 32px;
+  }
+  .brand {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+  .brand p:first-of-type {
+    color: var(--subtext);
+    max-width: 30ch;
+  }
+  .foot nav,
+  .contact {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+  }
+  .foot h2 {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--overlay1);
+    margin-bottom: 4px;
+  }
+  .foot nav a {
+    color: var(--subtext);
+    font-size: 15px;
+    width: fit-content;
+  }
+  .foot nav a:hover {
+    color: var(--text);
+  }
+  .contact :global(.btn.small) {
+    min-height: 40px;
+    font-size: 14px;
+    padding: 0 14px;
+  }
+  @media (max-width: 800px) {
+    .cols {
+      grid-template-columns: 1fr 1fr;
+    }
+    .brand,
+    .contact {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

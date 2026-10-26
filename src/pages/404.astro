@@ -1,0 +1,71 @@
+---
+// Not found: an empty search, the way the app shows one.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<Base title="Page not found - Vitrine" description="This page doesn't exist. Head back to Vitrine's home page.">
+  <section class="wrap nf">
+    <div class="bar" aria-hidden="true">
+      <Icon name="search" size={16} />
+      <span class="chip">this_page</span>
+    </div>
+    <div class="empty" aria-hidden="true">
+      {Array.from({ length: 8 }, (_, i) => <i style={`--i:${i}`} />)}
+    </div>
+    <h1>No results for this page.</h1>
+    <p class="lead">Try fewer tags. Or the home page.</p>
+    <a class="btn" href="/"><Icon name="arrow" size={18} /> Go home</a>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: 20px;
+    padding-top: clamp(60px, 10vw, 120px);
+  }
+  h1 {
+    font-size: clamp(32px, 5vw, 52px);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: min(100%, 420px);
+    min-height: 44px;
+    padding: 6px 12px;
+    border-radius: 12px;
+    background: var(--mantle);
+    border: 1px solid var(--surface1);
+    color: var(--overlay1);
+  }
+  .chip {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--blue);
+    background: color-mix(in srgb, var(--blue) 16%, transparent);
+  }
+  .empty {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    width: min(100%, 420px);
+  }
+  .empty i {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    border: 1px dashed var(--surface1);
+    animation: fade 2.4s var(--ease) infinite alternate;
+    animation-delay: calc(var(--i) * 0.15s);
+  }
+  @keyframes fade {
+    from {
+      opacity: 0.25;
+    }
+  }
+</style>

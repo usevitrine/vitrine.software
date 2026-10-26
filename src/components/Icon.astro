@@ -1,0 +1,89 @@
+---
+// The app's icons: Lucide's (the same set and version as Vitrine's web app), under short names; only these are bundled.
+import {
+  ArrowRight,
+  Bell,
+  BookOpen,
+  Check,
+  Copy,
+  Download,
+  ExternalLink,
+  Gauge,
+  GitFork,
+  HardDrive,
+  Heart,
+  Images,
+  Layers,
+  Mail,
+  Monitor,
+  Play,
+  Puzzle,
+  RefreshCw,
+  Search,
+  ShieldCheck,
+  Smartphone,
+  Sparkles,
+  Tags,
+  Terminal,
+  Trash2,
+  Undo2,
+  type IconNode,
+} from 'lucide';
+
+const icons = {
+  arrow: ArrowRight,
+  bell: Bell,
+  book: BookOpen,
+  check: Check,
+  copy: Copy,
+  download: Download,
+  external: ExternalLink,
+  gauge: Gauge,
+  fork: GitFork,
+  disk: HardDrive,
+  heart: Heart,
+  images: Images,
+  layers: Layers,
+  mail: Mail,
+  desktop: Monitor,
+  play: Play,
+  puzzle: Puzzle,
+  refresh: RefreshCw,
+  search: Search,
+  shield: ShieldCheck,
+  phone: Smartphone,
+  sparkles: Sparkles,
+  tags: Tags,
+  terminal: Terminal,
+  trash: Trash2,
+  undo: Undo2,
+} satisfies Record<string, IconNode>;
+
+interface Props {
+  name: keyof typeof icons;
+  size?: number;
+  class?: string;
+}
+const { name, size = 20, class: cls } = Astro.props;
+const attrs = (a: Record<string, string | number | undefined>) =>
+  Object.entries(a)
+    .filter(([, v]) => v !== undefined)
+    .map(([k, v]) => `${k}="${v}"`)
+    .join(' ');
+const inner = icons[name].map(([tag, a]) => `<${tag} ${attrs(a as Record<string, string>)}/>`).join('');
+---
+
+<svg
+  class={cls}
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  set:html={inner}
+/>

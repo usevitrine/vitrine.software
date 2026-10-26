@@ -1,0 +1,244 @@
+/* vitrine.software: the app's look - Catppuccin Mocha, the mauve accent, Plus Jakarta Sans - for a page to read. */
+:root {
+  color-scheme: dark;
+  --crust: #11111b;
+  --mantle: #181825;
+  --base: #1e1e2e;
+  --surface0: #313244;
+  --surface1: #45475a;
+  --surface2: #585b70;
+  --overlay0: #6c7086;
+  --overlay1: #7f849c;
+  --text: #cdd6f4;
+  --subtext: #a6adc8;
+  --mauve: #cba6f7;
+  --pink: #f5c2e7;
+  --lavender: #b4befe;
+  --blue: #89b4fa;
+  --teal: #94e2d5;
+  --green: #a6e3a1;
+  --yellow: #f9e2af;
+  --peach: #fab387;
+  --red: #f38ba8;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --radius: 14px;
+  --wide: 1180px;
+  --gutter: clamp(16px, 4vw, 40px);
+  font-family: 'Plus Jakarta Sans Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  background: var(--crust);
+  color: var(--text);
+  -webkit-text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--crust);
+  overflow-x: clip;
+}
+img,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+a {
+  color: var(--mauve);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+  text-wrap: balance;
+}
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+code,
+pre {
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace;
+}
+:focus-visible {
+  outline: 2px solid var(--mauve);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+::selection {
+  background: color-mix(in srgb, var(--mauve) 35%, transparent);
+}
+
+.wrap {
+  width: min(100%, calc(var(--wide) + 2 * var(--gutter)));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Buttons: filled (the main action, mauve) and quiet (outlined), like the app's. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--crust);
+  background: var(--mauve);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    transform 0.2s var(--ease),
+    box-shadow 0.25s var(--ease),
+    background-color 0.2s var(--ease);
+  box-shadow: 0 8px 28px -10px color-mix(in srgb, var(--mauve) 70%, transparent);
+}
+.btn:hover {
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px -10px color-mix(in srgb, var(--mauve) 80%, transparent);
+}
+.btn:active {
+  transform: translateY(0);
+}
+.btn.quiet {
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface0) 60%, transparent);
+  border-color: var(--surface1);
+  box-shadow: none;
+}
+.btn.quiet:hover {
+  background: var(--surface0);
+  border-color: var(--surface2);
+}
+
+/* The section's small label over its heading. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mauve);
+}
+.lead {
+  font-size: clamp(17px, 1.6vw, 19px);
+  color: var(--subtext);
+}
+/* The jokes live in the small print. */
+.aside {
+  font-size: 14px;
+  color: var(--overlay1);
+  font-style: italic;
+}
+.grad {
+  background: linear-gradient(100deg, var(--mauve), var(--pink) 55%, var(--peach));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* A card that glows where the pointer is (--mx/--my set by the page's script). */
+.glow {
+  position: relative;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface0) 55%, var(--mantle)), var(--mantle));
+  border: 1px solid color-mix(in srgb, var(--surface1) 70%, transparent);
+  border-radius: var(--radius);
+  isolation: isolate;
+}
+.glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, -20%), color-mix(in srgb, var(--mauve) 75%, transparent), transparent 45%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+  pointer-events: none;
+  z-index: 1;
+}
+.glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(500px circle at var(--mx, 50%) var(--my, -20%), color-mix(in srgb, var(--mauve) 9%, transparent), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+  pointer-events: none;
+  z-index: -1;
+}
+.glow:hover::before,
+.glow:hover::after {
+  opacity: 1;
+}
+
+/* Scrolled into view: slides up and fades in (in order, by --i). Without scripts everything just shows. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s var(--ease),
+    transform 0.9s var(--ease);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.js [data-reveal].in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  .js [data-reveal] {
+    transform: none;
+  }
+}

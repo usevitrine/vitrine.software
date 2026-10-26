@@ -1,0 +1,60 @@
+---
+// "Email us": the address never appears in the page - not as text, not as a mailto: link. Its parts are kept as
+// shifted character codes and put together by the script only when a person presses the button: the mail app
+// opens, the address is copied and shown beside the button. Without scripts: a hint that doesn't spell it out.
+interface Props {
+  label?: string;
+  class?: string;
+}
+const { label = 'Email us', class: cls = 'btn quiet' } = Astro.props;
+// "hello" and "vitrine.software", each character's code + 7 (the script takes it back off).
+const enc = (s: string) => [...s].map((c) => c.charCodeAt(0) + 7).join('.');
+---
+
+<span class="email">
+  <button type="button" class={cls} data-u={enc('hello')} data-d={enc('vitrine.software')}>
+    <slot />{label}
+  </button>
+  <span class="shown" aria-live="polite"></span>
+  <noscript><span class="hint">Email: hello at this site's domain.</span></noscript>
+</span>
+
+<script>
+  const dec = (s: string) => String.fromCharCode(...s.split('.').map((n) => Number(n) - 7));
+  for (const b of document.querySelectorAll<HTMLButtonElement>('.email button[data-u]')) {
+    b.addEventListener('click', () => {
+      const address = `${dec(b.dataset.u!)}${String.fromCharCode(64)}${dec(b.dataset.d!)}`;
+      const shown = b.parentElement!.querySelector('.shown')!;
+      shown.textContent = address;
+      shown.classList.add('on');
+      navigator.clipboard?.writeText(address).catch(() => {});
+      window.location.href = `${'mail'}to:${address}`;
+    });
+  }
+</script>
+
+<style>
+  .email {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .shown {
+    font-size: 14px;
+    color: var(--subtext);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition:
+      opacity 0.3s var(--ease),
+      transform 0.3s var(--ease);
+  }
+  .shown:global(.on) {
+    opacity: 1;
+    transform: none;
+  }
+  .hint {
+    font-size: 14px;
+    color: var(--subtext);
+  }
+</style>

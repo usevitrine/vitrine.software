@@ -1,0 +1,56 @@
+---
+// The demo: Vitrine's media screen in the browser, a library of public-domain art and open-movie clips. Until its
+// build is in place, a page that says what it will be (search engines read this text either way).
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+
+const title = 'Try Vitrine - a live demo in your browser';
+const description =
+  "Try Vitrine's media library in your browser: search, sort and filter a library of public-domain art and open-movie clips, open the viewer and the details with their tags and sources. Nothing to install, nothing saved.";
+---
+
+<Base title={title} description={description}>
+  <section class="wrap demo">
+    <p class="eyebrow"><Icon name="play" size={15} /> Demo</p>
+    <h1>Vitrine, right here in your browser.</h1>
+    <p class="lead">
+      The real media screen with a library of public-domain art and clips from the Blender open movies. Search, sort, open the viewer and the details,
+      tag and favorite things. Your changes stay in this tab only: reload and it's fresh again.
+    </p>
+    <div class="soon glow">
+      <Icon name="sparkles" size={22} />
+      <p>The demo is being put together. Come back soon.</p>
+      <p class="aside">It's tagging 300 paintings by hand. Well, by script.</p>
+    </div>
+    <a class="btn quiet" href="/"><Icon name="arrow" size={18} /> Back to the home page</a>
+  </section>
+</Base>
+
+<style>
+  .demo {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: 22px;
+    padding-top: clamp(60px, 10vw, 120px);
+  }
+  h1 {
+    font-size: clamp(36px, 6vw, 64px);
+  }
+  .lead {
+    max-width: 680px;
+  }
+  .soon {
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    width: min(100%, 560px);
+    padding: 36px 24px;
+    margin: 12px 0;
+    color: var(--mauve);
+  }
+  .soon p:not(.aside) {
+    color: var(--text);
+    font-weight: 600;
+  }
+</style>
