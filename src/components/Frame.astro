@@ -64,6 +64,22 @@ const sizes = kind === 'phone' ? '(min-width: 900px) 300px, 45vw' : '(min-width:
   {kind === 'laptop' && <div class="base" aria-hidden="true" />}
 </figure>
 
+<script>
+  // The phones' status bars show the visitor's own time, as a phone writes it: no AM/PM, the region's 12- or 24-hour
+  // clock (the page as built says 9:41).
+  const clock = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' });
+  const show = () => {
+    const now = clock.formatToParts(new Date()).filter((p) => p.type !== 'dayPeriod').map((p) => p.value).join('').trim();
+    for (const el of document.querySelectorAll('.frame.phone .time')) el.textContent = now;
+  };
+  show();
+  // At each new minute.
+  setTimeout(() => {
+    show();
+    setInterval(show, 60_000);
+  }, 60_000 - (Date.now() % 60_000));
+</script>
+
 <style>
   /* Every size in the frame is a share of its width (container units: cqw = 1% of it), so a small laptop or phone -
      the hero on a phone - looks like a big one shrunk, not one with a thick bar and round corners (the user: on a
