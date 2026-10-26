@@ -105,6 +105,10 @@ const img = new URL(image, Astro.site);
       )
     }
     <script>
+      import { overlayScroll } from '../lib/overlay-scroll';
+      // The app's scrollbar: the page's, and every code block's that scrolls sideways.
+      overlayScroll('page');
+      for (const pre of document.querySelectorAll<HTMLElement>('main pre')) overlayScroll(pre, 'x');
       // Scrolled into view: [data-reveal] slides in (once).
       const io = new IntersectionObserver(
         (entries) => {
