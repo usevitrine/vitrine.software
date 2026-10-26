@@ -533,10 +533,11 @@ const more = [
     margin: 0 auto;
     animation: lift 1.3s var(--ease) both 0.7s;
   }
+  /* (off the hero's bottom, which crops: its bezel was cut) */
   .hero-shots :global(.hero-phone) {
     position: absolute;
     right: max(var(--gutter), calc(50% - 560px));
-    bottom: 0;
+    bottom: clamp(10px, 2vw, 24px);
     width: clamp(110px, 20vw, 250px);
     animation: lift-phone 1.3s var(--ease) both 1.05s;
   }

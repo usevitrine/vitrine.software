@@ -65,9 +65,13 @@ const sizes = kind === 'phone' ? '(min-width: 900px) 300px, 45vw' : '(min-width:
 </figure>
 
 <style>
+  /* Every size in the frame is a share of its width (container units: cqw = 1% of it), so a small laptop or phone -
+     the hero on a phone - looks like a big one shrunk, not one with a thick bar and round corners (the user: on a
+     phone the browser bar was too big, the phone too round). --bz: the bezel. */
   .frame {
     margin: 0;
     position: relative;
+    container-type: inline-size;
   }
   .screen {
     position: relative;
@@ -78,26 +82,29 @@ const sizes = kind === 'phone' ? '(min-width: 900px) 300px, 45vw' : '(min-width:
     width: 100%;
     height: auto;
   }
+  .laptop {
+    --bz: max(3px, 0.6cqw);
+  }
   .laptop .screen {
-    border-radius: 14px 14px 4px 4px;
+    border-radius: max(5px, 1.3cqw) max(5px, 1.3cqw) max(2px, 0.4cqw) max(2px, 0.4cqw);
     border: 1px solid var(--surface1);
     box-shadow:
-      0 0 0 6px #0b0b12,
-      0 0 0 7px var(--surface0),
-      0 40px 80px -30px rgb(0 0 0 / 0.8);
+      0 0 0 var(--bz) #0b0b12,
+      0 0 0 calc(var(--bz) + 1px) var(--surface0),
+      0 4cqw 8cqw -3cqw rgb(0 0 0 / 0.8);
   }
   .chrome {
     display: flex;
     align-items: center;
-    gap: 6px;
-    height: 30px;
-    padding: 0 12px;
+    gap: 0.55cqw;
+    height: max(12px, 2.6cqw);
+    padding: 0 1.1cqw;
     background: var(--mantle);
     border-bottom: 1px solid var(--surface0);
   }
   .chrome i {
-    width: 10px;
-    height: 10px;
+    width: max(4px, 0.9cqw);
+    height: max(4px, 0.9cqw);
     border-radius: 50%;
     background: var(--surface1);
   }
@@ -112,41 +119,44 @@ const sizes = kind === 'phone' ? '(min-width: 900px) 300px, 45vw' : '(min-width:
   }
   .url {
     margin: 0 auto;
-    padding: 2px 28px;
-    border-radius: 6px;
+    padding: 0.15cqw 2.6cqw;
+    border-radius: 0.55cqw;
     background: var(--base);
-    font-size: 11px;
+    font-size: max(6px, 1cqw);
+    line-height: 1.4;
     color: var(--overlay1);
-    transform: translateX(-21px);
+    transform: translateX(-2cqw);
   }
-  /* (below the screen's bezel - a 7 px ring drawn outside it - not over its bottom edge) */
+  /* (below the screen's bezel - a ring drawn outside it - not over its bottom edge) */
   .base {
-    height: 14px;
-    margin: 7px max(-5%, -14px) 0;
-    border-radius: 2px 2px 14px 14px;
+    height: max(5px, 1.3cqw);
+    margin: calc(var(--bz) + 1px) max(-5%, -14px) 0;
+    border-radius: 2px 2px max(5px, 1.3cqw) max(5px, 1.3cqw);
     background: linear-gradient(180deg, #2a2b3c, #15151f);
-    box-shadow: 0 18px 30px -12px rgb(0 0 0 / 0.7);
+    box-shadow: 0 1.7cqw 2.8cqw -1.1cqw rgb(0 0 0 / 0.7);
   }
   .base::after {
     content: '';
     display: block;
     width: 16%;
-    height: 5px;
+    height: 40%;
     margin: 0 auto;
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 0.75cqw 0.75cqw;
     background: #0d0d15;
   }
   /* A phone: slightly rounded, a thin bezel, and a status bar of its own above the screenshot (the camera sits in
-     it, never over the page). Sized by the phone's width (container units), so it's the same at any size. */
+     it, never over the page). */
+  .phone {
+    --bz: max(2px, 1.8cqw);
+  }
   .phone .screen {
-    container-type: inline-size;
-    border-radius: 18px;
+    border-radius: 6.5cqw;
     border: 1px solid var(--surface1);
     background: var(--crust);
     box-shadow:
-      0 0 0 5px #0b0b12,
-      0 0 0 6px var(--surface0),
-      0 40px 70px -30px rgb(0 0 0 / 0.85);
+      0 0 0 var(--bz) #0b0b12,
+      0 0 0 calc(var(--bz) + 1px) var(--surface0),
+      0 14cqw 25cqw -11cqw rgb(0 0 0 / 0.85);
   }
   .status {
     display: grid;
