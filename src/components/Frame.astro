@@ -119,9 +119,10 @@ const sizes = kind === 'phone' ? '(min-width: 900px) 300px, 45vw' : '(min-width:
     color: var(--overlay1);
     transform: translateX(-21px);
   }
+  /* (below the screen's bezel - a 7 px ring drawn outside it - not over its bottom edge) */
   .base {
     height: 14px;
-    margin: 0 max(-5%, -14px);
+    margin: 7px max(-5%, -14px) 0;
     border-radius: 2px 2px 14px 14px;
     background: linear-gradient(180deg, #2a2b3c, #15151f);
     box-shadow: 0 18px 30px -12px rgb(0 0 0 / 0.7);

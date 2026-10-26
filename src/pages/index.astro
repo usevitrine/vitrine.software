@@ -1,8 +1,10 @@
 ---
+import type { ImageMetadata } from 'astro';
 import Base from '../layouts/Base.astro';
 import Frame from '../components/Frame.astro';
 import Icon from '../components/Icon.astro';
 import Email from '../components/Email.astro';
+import { Image } from 'astro:assets';
 import { REPO, PLUGINS_REPO, RELEASES, latestRelease } from '../lib/site';
 // (taken by the app repo's tools/siteshots from its demo library: public-domain art, Blender open-movie clips, McCay's comics)
 import library from '../assets/shots/desktop-library.png';
@@ -13,6 +15,9 @@ import phoneLibrary from '../assets/shots/phone-library.png';
 import phoneSearch from '../assets/shots/phone-search.png';
 import phoneVideo from '../assets/shots/phone-video.png';
 import phoneComics from '../assets/shots/phone-comics.png';
+
+// The Downloads mock-up's new files: thumbnails from the demo library (woodblock prints and landscapes, like its searches).
+const newFiles = Object.values(import.meta.glob<{ default: ImageMetadata }>('../assets/new/*.webp', { eager: true })).map((m) => m.default);
 
 const release = await latestRelease();
 const windows = release.windows ?? RELEASES;
@@ -219,8 +224,9 @@ const more = [
       </div>
       <div class="dl-new">
         {
-          Array.from({ length: 6 }, (_, i) => (
-            <i style={`--i:${i};--a:var(${hues[i]})`}>
+          newFiles.map((src, i) => (
+            <i style={`--i:${i}`}>
+              <Image src={src} alt="" width={120} height={120} fit="cover" layout="fixed" />
               <span>NEW</span>
             </i>
           ))
@@ -709,9 +715,13 @@ const more = [
     justify-content: space-between;
   }
   .pill {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    line-height: 1;
     font-size: 12px;
     font-weight: 700;
-    padding: 2px 10px;
+    padding: 0 10px;
     border-radius: 999px;
     color: var(--crust);
     background: var(--peach);
@@ -728,13 +738,6 @@ const more = [
     border-radius: 12px;
     background: var(--crust);
     border: 1px solid var(--surface0);
-    transition: transform 0.4s var(--ease);
-  }
-  .dlmock:hover .dl-card:nth-child(1) {
-    transform: translateX(-4px);
-  }
-  .dlmock:hover .dl-card:nth-child(3) {
-    transform: translateX(4px);
   }
   .site {
     display: grid;
@@ -756,12 +759,18 @@ const more = [
   .dl-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 8px;
   }
+  /* (its text in the middle: the page's tall line height left it high in the pill) */
   .kind {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    line-height: 1;
     font-size: 11px;
     font-weight: 700;
-    padding: 1px 8px;
+    padding: 0 8px;
     border-radius: 999px;
     color: var(--peach);
     background: color-mix(in srgb, var(--peach) 16%, transparent);
@@ -804,8 +813,15 @@ const more = [
     position: relative;
     aspect-ratio: 1;
     border-radius: 8px;
-    background: linear-gradient(140deg, color-mix(in srgb, var(--a) 60%, var(--base)), var(--surface0));
+    overflow: hidden;
+    background: var(--surface0);
     opacity: 0;
+  }
+  .dl-new i :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .dl-new span {
     position: absolute;
