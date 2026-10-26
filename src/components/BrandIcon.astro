@@ -1,0 +1,20 @@
+---
+// Brand marks (GitHub, ...): Simple Icons' (simpleicons.org), drawn in the text's color; every other icon is Lucide's
+// (Icon.astro). Only these are bundled.
+import { siGithub, type SimpleIcon } from 'simple-icons';
+
+const brands = {
+  github: siGithub,
+} satisfies Record<string, SimpleIcon>;
+
+interface Props {
+  name: keyof typeof brands;
+  size?: number;
+  class?: string;
+}
+const { name, size = 20, class: cls } = Astro.props;
+---
+
+<svg class={cls} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+  <path d={brands[name].path} />
+</svg>

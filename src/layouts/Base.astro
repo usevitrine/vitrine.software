@@ -6,6 +6,7 @@ import '../../app/web/src/lib/tokens.css'; // (the app's colors)
 import '../styles/global.css';
 import Logo from '../../app/web/src/components/Logo.svelte'; // (the app's own)
 import Icon from '../components/Icon.astro';
+import BrandIcon from '../components/BrandIcon.astro';
 import Email from '../components/Email.astro';
 import { REPO, PLUGINS_REPO, CHANGELOG } from '../lib/site';
 
@@ -61,7 +62,7 @@ const img = new URL(image, Astro.site);
               <a href="/#install">Install</a>
               <a href="/demo">Demo</a>
               <a class="gh" href={REPO} aria-label="Vitrine on GitHub">
-                <Icon name="fork" size={18} />
+                <BrandIcon name="github" size={17} />
                 <span>GitHub</span>
               </a>
             </nav>

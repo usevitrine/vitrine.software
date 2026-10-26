@@ -3,6 +3,7 @@ import type { ImageMetadata } from 'astro';
 import Base from '../layouts/Base.astro';
 import Frame from '../components/Frame.astro';
 import Icon from '../components/Icon.astro';
+import BrandIcon from '../components/BrandIcon.astro';
 import Email from '../components/Email.astro';
 import { Image } from 'astro:assets';
 import { REPO, PLUGINS_REPO, RELEASES, latestRelease } from '../lib/site';
@@ -383,7 +384,7 @@ const more = [
     <div class="ask" data-reveal>
       <p>Something else?</p>
       <Email><Icon name="mail" size={16} /></Email>
-      <a class="btn quiet" href={`${REPO}/issues`}><Icon name="fork" size={16} /> Ask on GitHub</a>
+      <a class="btn quiet" href={`${REPO}/issues`}><BrandIcon name="github" size={15} /> Ask on GitHub</a>
     </div>
   </section>
 </Base>
