@@ -100,8 +100,8 @@ const more = [
   { icon: 'bell', title: 'Push notifications', text: 'New files from your subscriptions, on your phone, without the sites named.' },
   { icon: 'disk', title: 'Backups', text: 'A daily backup of the library database, restored in two clicks.' },
   { icon: 'terminal', title: 'Command line', text: 'status, queue, subs, logs: the running server, from your terminal.' },
-  { icon: 'refresh', title: 'Updates in the app', text: 'Told when a new version is out, installed with one button.' },
-  { icon: 'shield', title: 'Yours', text: 'One login, your files on your disks. Nothing leaves unless you download it.' },
+  { icon: 'refresh', title: 'Updates in the app', text: 'Told when a new version is out, installed with one button. A fix for your library is explained first, yours to run or skip.' },
+  { icon: 'shield', title: 'Yours', text: 'One login, with a password or passkeys, and your files on your disks. Nothing leaves unless you download it.' },
 ] as const;
 ---
 
@@ -194,7 +194,8 @@ const more = [
       <h2>Subscriptions that actually finish.</h2>
       <p class="lead">
         Download a search once, or subscribe and get what's new on its own. Vitrine resumes exactly where it stopped, never downloads the same file twice,
-        respects each site's limits and checks every file against the site's own checksum.
+        respects each site's limits and checks every file against the site's own checksum. A site that stops answering pauses by itself and carries on when
+        it's back.
       </p>
       <p class="aside">Turn it off and on again. It picks up where it was. We checked.</p>
     </div>
