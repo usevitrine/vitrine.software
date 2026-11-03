@@ -27,14 +27,21 @@ inputs.vitrine.url = "github:usevitrine/vitrine/stable";
 
 # your system's modules
 vitrine.nixosModules.default
-{
+({ pkgs, ... }: {
   services.vitrine = {
     enable = true;
     dataDir = "/var/lib/vitrine"; # databases, thumbnails: an SSD
     filesDir = "/mnt/bulk/vitrine"; # originals: any big disk
     openFirewall = true;
   };
-}`;
+
+  # GPU video decoding (optional). Intel:
+  hardware.graphics.extraPackages = [ pkgs.intel-media-driver ];
+  # AMD: nothing to add, Mesa has it. Nvidia:
+  # nixpkgs.config.allowUnfree = true;
+  # services.xserver.videoDrivers = [ "nvidia" ];
+  # hardware.nvidia.open = true; # false before the GTX 16 series
+})`;
 
 const title = 'Vitrine - a fast, self-hosted media library with a built-in downloader';
 const description =
