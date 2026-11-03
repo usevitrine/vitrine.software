@@ -1,10 +1,11 @@
 ---
 // Brand marks (GitHub, ...): Simple Icons' (simpleicons.org), drawn in the text's color; every other icon is Lucide's
 // (Icon.astro). Only these are bundled.
-import { siGithub, type SimpleIcon } from 'simple-icons';
+import { siGithub, siNixos, type SimpleIcon } from 'simple-icons';
 
 const brands = {
   github: siGithub,
+  nixos: siNixos,
 } satisfies Record<string, SimpleIcon>;
 
 interface Props {
